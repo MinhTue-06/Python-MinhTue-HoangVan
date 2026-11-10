@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 import pyodbc
@@ -22,14 +23,16 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
         self.quay_lai = quay_lai
 
+        # Lưu mã gốc của tài khoản đang chọn
+        self.ma_tai_khoan_dang_chon = None
+
         self.create_interface()
 
     # =====================================================
-    # CHUYỂN SANG CHỨC NĂNG KHÁC
+    # CHUYỂN CHỨC NĂNG
     # =====================================================
 
     def chuyen_chuc_nang(self, ten_chuc_nang):
-
         ung_dung = self.winfo_toplevel()
 
         if hasattr(ung_dung, "mo_chuc_nang"):
@@ -37,7 +40,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
         else:
             messagebox.showerror(
                 "Lỗi",
-                "Không tìm thấy chức năng chuyển trang! Vui lòng đăng nhập để thực hiện!"
+                "Không tìm thấy chức năng chuyển trang!"
             )
 
     # =====================================================
@@ -45,7 +48,6 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
     # =====================================================
 
     def get_connection(self):
-
         try:
             conn_str = (
                 "DRIVER={ODBC Driver 17 for SQL Server};"
@@ -53,16 +55,13 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 f"DATABASE={DB_NAME};"
                 "Trusted_Connection=yes;"
             )
-
             return pyodbc.connect(conn_str)
 
         except Exception as e:
-
             messagebox.showerror(
                 "Lỗi kết nối",
                 f"Không thể kết nối SQL Server:\n\n{e}"
             )
-
             return None
 
     # =====================================================
@@ -71,24 +70,15 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
     def create_interface(self):
 
-        # =================================================
         # THANH ĐIỀU HƯỚNG
-        # =================================================
 
         nav_frame = ctk.CTkFrame(
             self,
             fg_color="transparent"
         )
+        nav_frame.pack(fill="x", padx=15, pady=5)
 
-        nav_frame.pack(
-            fill="x",
-            padx=15,
-            pady=5
-        )
-
-        # NÚT QUAY LẠI TRANG CHỦ
-
-        btn_quay_lai = ctk.CTkButton(
+        ctk.CTkButton(
             nav_frame,
             text="QUAY LẠI TRANG CHỦ",
             command=self.quay_lai,
@@ -98,25 +88,17 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             fg_color="#57595A",
             hover_color="#3C3F40",
             text_color="white"
-        )
-
-        btn_quay_lai.pack(
-            side="left",
-            padx=3
-        )
-
-        # DANH SÁCH CHỨC NĂNG
+        ).pack(side="left", padx=3)
 
         cac_chuc_nang = [
-            ("QUẢN LÝ ĐIỂM ĐẾN", 155),
-            ("QUẢN LÝ TUYẾN DU LỊCH", 175),
+            ("QUẢN LÝ ĐIỂM ĐẾN", 165),
+            ("QUẢN LÝ TUYẾN DU LỊCH", 165),
             ("QUẢN LÝ KHÁCH HÀNG", 165),
-            ("QUẢN LÝ ĐẶT TOUR", 150),
+            ("QUẢN LÝ ĐẶT TOUR", 165),
             ("QUẢN LÝ TÀI KHOẢN", 165)
         ]
 
         for ten, chieu_rong in cac_chuc_nang:
-
             dang_mo = ten == "QUẢN LÝ TÀI KHOẢN"
 
             ctk.CTkButton(
@@ -133,41 +115,27 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 fg_color="#C8B99A" if dang_mo else "#57595A",
                 hover_color="#B7A582" if dang_mo else "#3C3F40",
                 text_color="#333333" if dang_mo else "white"
-            ).pack(
-                side="left",
-                padx=3
-            )
+            ).pack(side="left", padx=3)
 
-        # =================================================
         # TIÊU ĐỀ
-        # =================================================
 
-        title = ctk.CTkLabel(
+        ctk.CTkLabel(
             self,
             text="QUẢN LÝ TÀI KHOẢN",
             font=("Times New Roman", 22, "bold"),
             text_color="#3369A7"
-        )
+        ).pack(pady=10)
 
-        title.pack(pady=10)
-
-        # =================================================
         # KHUNG NHẬP DỮ LIỆU
-        # =================================================
 
         input_frame = ctk.CTkFrame(
             self,
             fg_color="#FBF8F1",
             corner_radius=12
         )
+        input_frame.pack(fill="x", padx=15, pady=5)
 
-        input_frame.pack(
-            fill="x",
-            padx=15,
-            pady=5
-        )
-
-        # MÃ TÀI KHOẢN
+        # MÃ TÀI KHOẢN - LUÔN CHO PHÉP NHẬP
 
         ctk.CTkLabel(
             input_frame,
@@ -181,10 +149,11 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             height=40,
             font=("Times New Roman", 16),
             justify="center",
-            state="disabled"
+            state="normal"
         )
-
-        self.txtMaTaiKhoan.grid(row=0, column=1, padx=8, pady=6)
+        self.txtMaTaiKhoan.grid(
+            row=0, column=1, padx=8, pady=6
+        )
 
         # TÊN ĐĂNG NHẬP
 
@@ -201,8 +170,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             font=("Times New Roman", 16),
             justify="center"
         )
-
-        self.txtTenDangNhap.grid(row=0, column=3, padx=8, pady=6)
+        self.txtTenDangNhap.grid(
+            row=0, column=3, padx=8, pady=6
+        )
 
         # MẬT KHẨU
 
@@ -220,8 +190,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             justify="center",
             show="*"
         )
-
-        self.txtMatKhau.grid(row=1, column=1, padx=8, pady=6)
+        self.txtMatKhau.grid(
+            row=1, column=1, padx=8, pady=6
+        )
 
         # HỌ TÊN
 
@@ -238,8 +209,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             font=("Times New Roman", 16),
             justify="center"
         )
-
-        self.txtHoTen.grid(row=1, column=3, padx=8, pady=6)
+        self.txtHoTen.grid(
+            row=1, column=3, padx=8, pady=6
+        )
 
         # EMAIL
 
@@ -256,8 +228,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             font=("Times New Roman", 16),
             justify="center"
         )
-
-        self.txtEmail.grid(row=2, column=1, padx=8, pady=6)
+        self.txtEmail.grid(
+            row=2, column=1, padx=8, pady=6
+        )
 
         # SỐ ĐIỆN THOẠI
 
@@ -274,8 +247,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             font=("Times New Roman", 16),
             justify="center"
         )
-
-        self.txtSoDienThoai.grid(row=2, column=3, padx=8, pady=6)
+        self.txtSoDienThoai.grid(
+            row=2, column=3, padx=8, pady=6
+        )
 
         # QUYỀN
 
@@ -293,8 +267,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             justify="center",
             placeholder_text="Ví dụ: Quản trị viên, Nhân viên"
         )
-
-        self.txtQuyen.grid(row=3, column=1, padx=8, pady=6)
+        self.txtQuyen.grid(
+            row=3, column=1, padx=8, pady=6
+        )
 
         # TRẠNG THÁI
 
@@ -312,20 +287,18 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             justify="center",
             values=["Hoạt động", "Bị khóa"]
         )
+        self.cboTrangThai.grid(
+            row=3, column=3, padx=8, pady=6
+        )
+        self.cboTrangThai.set("Hoạt động")
 
-        self.cboTrangThai.grid(row=3, column=3, padx=8, pady=6)
-        self.cboTrangThai.set("")
-
-        # =================================================
         # KHUNG BẢNG
-        # =================================================
 
         table_frame = ctk.CTkFrame(
             self,
             fg_color="white",
             corner_radius=12
         )
-
         table_frame.pack(
             fill="both",
             expand=True,
@@ -333,13 +306,11 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             pady=5
         )
 
-        # CẤU HÌNH BẢNG
-
         style = ttk.Style()
 
         style.configure(
             "Treeview",
-            font=("Times New Roman", 26),
+            font=("Times New Roman", 30),
             rowheight=45,
             background="white",
             foreground="black",
@@ -348,7 +319,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
         style.configure(
             "Treeview.Heading",
-            font=("Times New Roman", 24, "bold"),
+            font=("Times New Roman", 28, "bold"),
             background="#D9D9D9",
             foreground="black"
         )
@@ -358,8 +329,6 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             background=[("selected", "#B7D7F0")],
             foreground=[("selected", "black")]
         )
-
-        # CỘT BẢNG
 
         columns = (
             "MaTaiKhoan",
@@ -378,25 +347,35 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             show="headings"
         )
 
-        self.tree.heading("MaTaiKhoan", text="Mã tài khoản")
-        self.tree.heading("TenDangNhap", text="Tên đăng nhập")
-        self.tree.heading("MatKhau", text="Mật khẩu")
-        self.tree.heading("HoTen", text="Họ tên")
-        self.tree.heading("Email", text="Email")
-        self.tree.heading("SoDienThoai", text="Số điện thoại")
-        self.tree.heading("Quyen", text="Quyền")
-        self.tree.heading("TrangThai", text="Trạng thái")
+        tieu_de = {
+            "MaTaiKhoan": "Mã tài khoản",
+            "TenDangNhap": "Tên đăng nhập",
+            "MatKhau": "Mật khẩu",
+            "HoTen": "Họ tên",
+            "Email": "Email",
+            "SoDienThoai": "Số điện thoại",
+            "Quyen": "Quyền",
+            "TrangThai": "Trạng thái"
+        }
 
-        self.tree.column("MaTaiKhoan", width=120, anchor="center")
-        self.tree.column("TenDangNhap", width=180, anchor="center")
-        self.tree.column("MatKhau", width=150, anchor="center")
-        self.tree.column("HoTen", width=200, anchor="center")
-        self.tree.column("Email", width=220, anchor="center")
-        self.tree.column("SoDienThoai", width=160, anchor="center")
-        self.tree.column("Quyen", width=150, anchor="center")
-        self.tree.column("TrangThai", width=150, anchor="center")
+        do_rong = {
+            "MaTaiKhoan": 120,
+            "TenDangNhap": 180,
+            "MatKhau": 150,
+            "HoTen": 200,
+            "Email": 220,
+            "SoDienThoai": 160,
+            "Quyen": 150,
+            "TrangThai": 150
+        }
 
-        # THANH CUỘN NGANG
+        for cot in columns:
+            self.tree.heading(cot, text=tieu_de[cot])
+            self.tree.column(
+                cot,
+                width=do_rong[cot],
+                anchor="center"
+            )
 
         scrollbar_x = ttk.Scrollbar(
             table_frame,
@@ -404,9 +383,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             command=self.tree.xview
         )
 
-        self.tree.configure(
-            xscrollcommand=scrollbar_x.set
-        )
+        self.tree.configure(xscrollcommand=scrollbar_x.set)
 
         self.tree.pack(
             fill="both",
@@ -421,78 +398,128 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             pady=(0, 8)
         )
 
-                # =================================================
-        # NÚT CHỨC NĂNG
-        # =================================================
+        # CHỌN DÒNG TRONG BẢNG
+
+        self.tree.bind(
+            "<ButtonRelease-1>",
+            self.chon_dong
+        )
+
+        # KHUNG NÚT CHỨC NĂNG
 
         button_frame = ctk.CTkFrame(
             self,
             fg_color="transparent"
         )
-
-        button_frame.pack(pady=8)
-
-        # NÚT THÊM
+        button_frame.pack(
+            fill="x",
+            padx=15,
+            pady=5
+        )
 
         self.btnThem = ctk.CTkButton(
             button_frame,
             text="THÊM",
-            width=150,
-            height=40,
+            width=130,
+            height=38,
             font=("Times New Roman", 14, "bold"),
             fg_color="#2196F3",
+            hover_color="#1976D2",
             command=self.them_tai_khoan
         )
-
-        self.btnThem.grid(row=0, column=0, padx=10)
-
-        # NÚT SỬA
+        self.btnThem.pack(side="left", padx=3)
 
         self.btnSua = ctk.CTkButton(
             button_frame,
             text="SỬA",
-            width=150,
-            height=40,
+            width=130,
+            height=38,
             font=("Times New Roman", 14, "bold"),
             fg_color="#FF9800",
+            hover_color="#E68900",
             command=self.sua_tai_khoan
         )
-
-        self.btnSua.grid(row=0, column=1, padx=10)
-
-        # NÚT XÓA
+        self.btnSua.pack(side="left", padx=3)
 
         self.btnXoa = ctk.CTkButton(
             button_frame,
             text="XÓA",
-            width=150,
-            height=40,
+            width=130,
+            height=38,
             font=("Times New Roman", 14, "bold"),
             fg_color="#F44336",
+            hover_color="#D32F2F",
             command=self.xoa_tai_khoan
         )
-
-        self.btnXoa.grid(row=0, column=2, padx=10)
-
-        # NÚT LÀM MỚI
+        self.btnXoa.pack(side="left", padx=3)
 
         self.btnLamMoi = ctk.CTkButton(
             button_frame,
             text="LÀM MỚI",
-            width=150,
-            height=40,
+            width=130,
+            height=38,
             font=("Times New Roman", 14, "bold"),
             fg_color="#607D8B",
+            hover_color="#455A64",
             command=self.lam_moi
         )
+        self.btnLamMoi.pack(side="left", padx=3)
 
-        self.btnLamMoi.grid(row=0, column=3, padx=10)
+        ctk.CTkFrame(
+            button_frame,
+            width=2,
+            height=32,
+            fg_color="#B7A582"
+        ).pack(side="left", padx=8)
 
-        # CHỌN DÒNG
+        self.btnTimKiem = ctk.CTkButton(
+            button_frame,
+            text="⌕ TÌM KIẾM",
+            width=130,
+            height=38,
+            font=("Times New Roman", 14, "bold"),
+            fg_color="#D6E8F8",
+            hover_color="#B8D8F5",
+            text_color="#1565C0",
+            command=self.tim_kiem_tai_khoan
+        )
+        self.btnTimKiem.pack(side="left", padx=3)
 
-        self.tree.bind("<ButtonRelease-1>", self.chon_dong)
+        ctk.CTkLabel(
+            button_frame,
+            text="Tìm kiếm:",
+            font=("Times New Roman", 14),
+            text_color="#333333"
+        ).pack(side="left", padx=(5, 3))
 
-        # HIỂN THỊ DỮ LIỆU
+        self.txtTimKiem = ctk.CTkEntry(
+            button_frame,
+            width=180,
+            height=38,
+            font=("Times New Roman", 14),
+            placeholder_text="Nhập từ khóa..."
+        )
+        self.txtTimKiem.pack(side="left", padx=3)
+
+        self.txtTimKiem.bind(
+            "<Return>",
+            lambda event: self.tim_kiem_tai_khoan()
+        )
+
+        self.btnXoaTimKiem = ctk.CTkButton(
+            button_frame,
+            text="✖ XÓA TÌM KIẾM",
+            width=130,
+            height=38,
+            font=("Times New Roman", 12, "bold"),
+            fg_color="#F5A3A3",
+            hover_color="#E88B8B",
+            text_color="#A32222",
+            command=self.xoa_tim_kiem
+        )
+        self.btnXoaTimKiem.pack(side="right", padx=3)
+
+        # HIỂN THỊ DỮ LIỆU BAN ĐẦU
 
         self.hien_thi_tai_khoan()
 
@@ -500,7 +527,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
     # HIỂN THỊ DỮ LIỆU
     # =====================================================
 
-    def hien_thi_tai_khoan(self):
+    def hien_thi_tai_khoan(self, tu_khoa=None):
 
         for item in self.tree.get_children():
             self.tree.delete(item)
@@ -511,27 +538,63 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             return
 
         try:
-
             cursor = conn.cursor()
 
-            cursor.execute("""
-                SELECT
-                    MaTaiKhoan,
-                    TenDangNhap,
-                    HoTen,
-                    Email,
-                    SoDienThoai,
-                    Quyen,
-                    TrangThai
-                FROM TAIKHOAN
-                ORDER BY MaTaiKhoan
-            """)
+            if tu_khoa:
+                tu_khoa_sql = f"%{tu_khoa}%"
+
+                cursor.execute("""
+                    SELECT
+                        MaTaiKhoan,
+                        TenDangNhap,
+                        HoTen,
+                        Email,
+                        SoDienThoai,
+                        Quyen,
+                        TrangThai
+                    FROM TAIKHOAN
+                    WHERE
+                        CAST(MaTaiKhoan AS NVARCHAR(50)) LIKE ?
+                        OR TenDangNhap LIKE ?
+                        OR HoTen LIKE ?
+                        OR Email LIKE ?
+                        OR SoDienThoai LIKE ?
+                        OR Quyen LIKE ?
+                        OR CASE
+                            WHEN TrangThai = 1 THEN N'Hoạt động'
+                            ELSE N'Bị khóa'
+                        END LIKE ?
+                    ORDER BY MaTaiKhoan
+                """, (
+                    tu_khoa_sql,
+                    tu_khoa_sql,
+                    tu_khoa_sql,
+                    tu_khoa_sql,
+                    tu_khoa_sql,
+                    tu_khoa_sql,
+                    tu_khoa_sql
+                ))
+
+            else:
+                cursor.execute("""
+                    SELECT
+                        MaTaiKhoan,
+                        TenDangNhap,
+                        HoTen,
+                        Email,
+                        SoDienThoai,
+                        Quyen,
+                        TrangThai
+                    FROM TAIKHOAN
+                    ORDER BY MaTaiKhoan
+                """)
 
             rows = cursor.fetchall()
 
             for row in rows:
-
-                trang_thai = "Hoạt động" if row[6] else "Bị khóa"
+                trang_thai = (
+                    "Hoạt động" if row[6] else "Bị khóa"
+                )
 
                 self.tree.insert(
                     "",
@@ -548,8 +611,15 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                     )
                 )
 
-        except Exception as e:
+            cursor.close()
 
+            if tu_khoa and not rows:
+                messagebox.showinfo(
+                    "Thông báo",
+                    "Không tìm thấy tài khoản phù hợp!"
+                )
+
+        except Exception as e:
             messagebox.showerror(
                 "Lỗi",
                 f"Không thể hiển thị dữ liệu:\n\n{e}"
@@ -559,31 +629,77 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             conn.close()
 
     # =====================================================
-    # HÀM ĐIỀN MÃ TÀI KHOẢN
+    # TÌM KIẾM
+    # =====================================================
+
+    def tim_kiem_tai_khoan(self):
+
+        tu_khoa = self.txtTimKiem.get().strip()
+
+        if not tu_khoa:
+            messagebox.showwarning(
+                "Thông báo",
+                "Vui lòng nhập từ khóa cần tìm!"
+            )
+            self.txtTimKiem.focus()
+            return
+
+        self.lam_trong_o_nhap()
+        self.hien_thi_tai_khoan(tu_khoa)
+
+    # =====================================================
+    # XÓA TÌM KIẾM
+    # =====================================================
+
+    def xoa_tim_kiem(self):
+
+        self.txtTimKiem.delete(0, "end")
+
+        self.lam_trong_o_nhap()
+        self.hien_thi_tai_khoan()
+
+    # =====================================================
+    # ĐIỀN MÃ TÀI KHOẢN
     # =====================================================
 
     def dien_ma_tai_khoan(self, ma):
 
+        # LUÔN ĐỂ Ô MÃ Ở TRẠNG THÁI CÓ THỂ NHẬP
+
         self.txtMaTaiKhoan.configure(state="normal")
         self.txtMaTaiKhoan.delete(0, "end")
-        self.txtMaTaiKhoan.insert(0, str(ma))
-        self.txtMaTaiKhoan.configure(state="disabled")
+
+        if ma is not None and str(ma) != "":
+            self.txtMaTaiKhoan.insert(0, str(ma))
 
     # =====================================================
-    # CHỌN DÒNG
+    # CHỌN DÒNG TRONG BẢNG
     # =====================================================
 
-    def chon_dong(self, event):
+    def chon_dong(self, event=None):
+
+        if event is not None:
+            item = self.tree.identify_row(event.y)
+
+            if not item:
+                return
+
+            self.tree.selection_set(item)
+            self.tree.focus(item)
 
         selected = self.tree.focus()
 
-        if selected == "":
+        if not selected:
             return
 
         values = self.tree.item(selected, "values")
 
         if not values:
             return
+
+        # LƯU MÃ GỐC ĐỂ SỬA/XÓA CHÍNH XÁC
+
+        self.ma_tai_khoan_dang_chon = str(values[0])
 
         self.dien_ma_tai_khoan(values[0])
 
@@ -604,7 +720,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
         self.cboTrangThai.set(values[7])
 
-        # LẤY MẬT KHẨU THẬT TỪ DATABASE
+        # LẤY MẬT KHẨU TỪ DATABASE
 
         conn = self.get_connection()
 
@@ -612,30 +728,24 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             return
 
         try:
-
             cursor = conn.cursor()
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 SELECT MatKhau
                 FROM TAIKHOAN
                 WHERE MaTaiKhoan = ?
-                """,
-                (values[0],)
-            )
+            """, (self.ma_tai_khoan_dang_chon,))
 
             row = cursor.fetchone()
 
             self.txtMatKhau.delete(0, "end")
 
-            if row:
-                self.txtMatKhau.insert(
-                    0,
-                    row[0] if row[0] else ""
-                )
+            if row and row[0]:
+                self.txtMatKhau.insert(0, row[0])
+
+            cursor.close()
 
         except Exception as e:
-
             messagebox.showerror(
                 "Lỗi",
                 f"Không thể lấy mật khẩu:\n\n{e}"
@@ -645,32 +755,62 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             conn.close()
 
     # =====================================================
+    # LẤY DỮ LIỆU TỪ FORM
+    # =====================================================
+
+    def lay_du_lieu_form(self):
+
+        ten_dang_nhap = self.txtTenDangNhap.get().strip()
+        mat_khau = self.txtMatKhau.get().strip()
+        ho_ten = self.txtHoTen.get().strip()
+        email = self.txtEmail.get().strip()
+        so_dien_thoai = self.txtSoDienThoai.get().strip()
+        quyen = self.txtQuyen.get().strip()
+
+        trang_thai_text = self.cboTrangThai.get().strip()
+
+        if not ten_dang_nhap or not mat_khau or not ho_ten:
+            messagebox.showwarning(
+                "Thông báo",
+                "Vui lòng nhập tên đăng nhập, mật khẩu và họ tên!"
+            )
+            return None
+
+        if not quyen:
+            messagebox.showwarning(
+                "Thông báo",
+                "Vui lòng nhập quyền tài khoản!"
+            )
+            return None
+
+        if trang_thai_text not in ["Hoạt động", "Bị khóa"]:
+            messagebox.showwarning(
+                "Thông báo",
+                "Vui lòng chọn trạng thái tài khoản!"
+            )
+            return None
+
+        trang_thai = 1 if trang_thai_text == "Hoạt động" else 0
+
+        return (
+            ten_dang_nhap,
+            mat_khau,
+            ho_ten,
+            email,
+            so_dien_thoai,
+            quyen,
+            trang_thai
+        )
+
+    # =====================================================
     # THÊM TÀI KHOẢN
     # =====================================================
 
     def them_tai_khoan(self):
 
-        TenDangNhap = self.txtTenDangNhap.get().strip()
-        MatKhau = self.txtMatKhau.get().strip()
-        HoTen = self.txtHoTen.get().strip()
-        Email = self.txtEmail.get().strip()
-        SoDienThoai = self.txtSoDienThoai.get().strip()
-        Quyen = self.txtQuyen.get().strip()
+        data = self.lay_du_lieu_form()
 
-        TrangThai = 1 if self.cboTrangThai.get() == "Hoạt động" else 0
-
-        if TenDangNhap == "" or MatKhau == "" or HoTen == "":
-            messagebox.showwarning(
-                "Thông báo",
-                "Vui lòng nhập tên đăng nhập, mật khẩu và họ tên!"
-            )
-            return
-
-        if Quyen == "":
-            messagebox.showwarning(
-                "Thông báo",
-                "Vui lòng nhập quyền tài khoản!"
-            )
+        if data is None:
             return
 
         conn = self.get_connection()
@@ -679,17 +819,13 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             return
 
         try:
-
             cursor = conn.cursor()
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 SELECT COUNT(*)
                 FROM TAIKHOAN
                 WHERE TenDangNhap = ?
-                """,
-                (TenDangNhap,)
-            )
+            """, (data[0],))
 
             if cursor.fetchone()[0] > 0:
                 messagebox.showwarning(
@@ -698,8 +834,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 )
                 return
 
-            cursor.execute(
-                """
+            # MaTaiKhoan là IDENTITY nên SQL Server tự tạo mã
+
+            cursor.execute("""
                 INSERT INTO TAIKHOAN
                 (
                     TenDangNhap,
@@ -711,17 +848,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                     TrangThai
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    TenDangNhap,
-                    MatKhau,
-                    HoTen,
-                    Email,
-                    SoDienThoai,
-                    Quyen,
-                    TrangThai
-                )
-            )
+            """, data)
 
             conn.commit()
 
@@ -730,11 +857,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 "Thêm tài khoản thành công!"
             )
 
-            self.hien_thi_tai_khoan()
             self.lam_moi()
 
         except Exception as e:
-
             conn.rollback()
 
             messagebox.showerror(
@@ -751,35 +876,19 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
     def sua_tai_khoan(self):
 
-        MaTaiKhoan = self.txtMaTaiKhoan.get().strip()
-        TenDangNhap = self.txtTenDangNhap.get().strip()
-        MatKhau = self.txtMatKhau.get().strip()
-        HoTen = self.txtHoTen.get().strip()
-        Email = self.txtEmail.get().strip()
-        SoDienThoai = self.txtSoDienThoai.get().strip()
-        Quyen = self.txtQuyen.get().strip()
+        # Dùng mã gốc của dòng đã chọn, không dùng mã đã bị sửa
+        ma_goc = self.ma_tai_khoan_dang_chon
 
-        TrangThai = 1 if self.cboTrangThai.get() == "Hoạt động" else 0
-
-        if MaTaiKhoan == "":
+        if not ma_goc:
             messagebox.showwarning(
                 "Thông báo",
-                "Vui lòng chọn tài khoản cần sửa!"
+                "Vui lòng chọn một tài khoản trong bảng để sửa!"
             )
             return
 
-        if TenDangNhap == "" or MatKhau == "" or HoTen == "":
-            messagebox.showwarning(
-                "Thông báo",
-                "Vui lòng nhập tên đăng nhập, mật khẩu và họ tên!"
-            )
-            return
+        data = self.lay_du_lieu_form()
 
-        if Quyen == "":
-            messagebox.showwarning(
-                "Thông báo",
-                "Vui lòng nhập quyền tài khoản!"
-            )
+        if data is None:
             return
 
         conn = self.get_connection()
@@ -788,20 +897,16 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             return
 
         try:
-
             cursor = conn.cursor()
 
-            # KIỂM TRA TÊN ĐĂNG NHẬP CÓ BỊ TRÙNG KHÔNG
+            # Kiểm tra tên đăng nhập trùng với tài khoản khác
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 SELECT COUNT(*)
                 FROM TAIKHOAN
                 WHERE TenDangNhap = ?
                 AND MaTaiKhoan <> ?
-                """,
-                (TenDangNhap, MaTaiKhoan)
-            )
+            """, (data[0], ma_goc))
 
             if cursor.fetchone()[0] > 0:
                 messagebox.showwarning(
@@ -810,8 +915,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 )
                 return
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 UPDATE TAIKHOAN
                 SET
                     TenDangNhap = ?,
@@ -822,18 +926,7 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                     Quyen = ?,
                     TrangThai = ?
                 WHERE MaTaiKhoan = ?
-                """,
-                (
-                    TenDangNhap,
-                    MatKhau,
-                    HoTen,
-                    Email,
-                    SoDienThoai,
-                    Quyen,
-                    TrangThai,
-                    MaTaiKhoan
-                )
-            )
+            """, data + (ma_goc,))
 
             if cursor.rowcount == 0:
                 messagebox.showwarning(
@@ -849,11 +942,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 "Sửa tài khoản thành công!"
             )
 
-            self.hien_thi_tai_khoan()
             self.lam_moi()
 
         except Exception as e:
-
             conn.rollback()
 
             messagebox.showerror(
@@ -870,18 +961,18 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
     def xoa_tai_khoan(self):
 
-        MaTaiKhoan = self.txtMaTaiKhoan.get().strip()
+        ma_goc = self.ma_tai_khoan_dang_chon
 
-        if MaTaiKhoan == "":
+        if not ma_goc:
             messagebox.showwarning(
                 "Thông báo",
-                "Vui lòng chọn tài khoản cần xóa!"
+                "Vui lòng chọn tài khoản cần xóa trong bảng!"
             )
             return
 
         xac_nhan = messagebox.askyesno(
             "Xác nhận",
-            "Bạn có chắc muốn xóa tài khoản này không?"
+            f"Bạn có chắc muốn xóa tài khoản mã {ma_goc} không?"
         )
 
         if not xac_nhan:
@@ -893,16 +984,12 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             return
 
         try:
-
             cursor = conn.cursor()
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 DELETE FROM TAIKHOAN
                 WHERE MaTaiKhoan = ?
-                """,
-                (MaTaiKhoan,)
-            )
+            """, (ma_goc,))
 
             if cursor.rowcount == 0:
                 messagebox.showwarning(
@@ -918,11 +1005,9 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
                 "Xóa tài khoản thành công!"
             )
 
-            self.hien_thi_tai_khoan()
             self.lam_moi()
 
         except Exception as e:
-
             conn.rollback()
 
             messagebox.showerror(
@@ -936,12 +1021,17 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
             conn.close()
 
     # =====================================================
-    # LÀM MỚI
+    # XÓA TRỐNG CÁC Ô NHẬP
     # =====================================================
 
-    def lam_moi(self):
+    def lam_trong_o_nhap(self):
 
-        self.dien_ma_tai_khoan("")
+        # XÓA MÃ NHƯNG KHÔNG KHÓA Ô NHẬP
+
+        self.ma_tai_khoan_dang_chon = None
+
+        self.txtMaTaiKhoan.configure(state="normal")
+        self.txtMaTaiKhoan.delete(0, "end")
 
         self.txtTenDangNhap.delete(0, "end")
         self.txtMatKhau.delete(0, "end")
@@ -957,6 +1047,17 @@ class QuanLyTaiKhoan(ctk.CTkFrame):
 
         self.tree.focus("")
 
+    # =====================================================
+    # LÀM MỚI
+    # =====================================================
+
+    def lam_moi(self):
+
+        self.txtTimKiem.delete(0, "end")
+
+        self.lam_trong_o_nhap()
+        self.hien_thi_tai_khoan()
+
 
 # =========================================================
 # CHẠY RIÊNG FILE ĐỂ KIỂM TRA
@@ -970,6 +1071,7 @@ if __name__ == "__main__":
     app = ctk.CTk()
     app.geometry("1100x650")
     app.configure(fg_color="#F3EBDD")
+    app.title("QUẢN LÝ TÀI KHOẢN")
 
     giao_dien = QuanLyTaiKhoan(
         app,
@@ -979,6 +1081,9 @@ if __name__ == "__main__":
         )
     )
 
-    giao_dien.pack(fill="both", expand=True)
+    giao_dien.pack(
+        fill="both",
+        expand=True
+    )
 
     app.mainloop()

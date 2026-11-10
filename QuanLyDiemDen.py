@@ -24,7 +24,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         self.create_interface()
 
-
     # =====================================================
     # CHUYỂN SANG CHỨC NĂNG KHÁC
     # =====================================================
@@ -40,7 +39,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
                 "Lỗi",
                 "Không tìm thấy chức năng chuyển trang! Vui lòng đăng nhập để thực hiện!"
             )
-
 
     # =====================================================
     # KẾT NỐI SQL SERVER
@@ -59,14 +57,12 @@ class QuanLyDiemDen(ctk.CTkFrame):
             return pyodbc.connect(conn_str)
 
         except Exception as e:
-
             messagebox.showerror(
                 "Lỗi kết nối",
                 f"Không thể kết nối SQL Server:\n\n{e}"
             )
 
             return None
-
 
     # =====================================================
     # TẠO GIAO DIỆN
@@ -89,8 +85,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
             pady=5
         )
 
-        # NÚT QUAY LẠI TRANG CHỦ
-
         btn_quay_lai = ctk.CTkButton(
             nav_frame,
             text="QUAY LẠI TRANG CHỦ",
@@ -103,19 +97,14 @@ class QuanLyDiemDen(ctk.CTkFrame):
             text_color="white"
         )
 
-        btn_quay_lai.pack(
-            side="left",
-            padx=3
-        )
-
-        # DANH SÁCH CHỨC NĂNG
+        btn_quay_lai.pack(side="left", padx=3)
 
         cac_chuc_nang = [
-            ("QUẢN LÝ ĐIỂM ĐẾN", 155),
-            ("QUẢN LÝ TUYẾN DU LỊCH", 175),
+            ("QUẢN LÝ ĐIỂM ĐẾN", 165),
+            ("QUẢN LÝ TUYẾN DU LỊCH", 165),
             ("QUẢN LÝ KHÁCH HÀNG", 165),
-            ("QUẢN LÝ ĐẶT TOUR", 150),
-            ("QUẢN LÝ TÀI KHOẢN", 155)
+            ("QUẢN LÝ ĐẶT TOUR", 165),
+            ("QUẢN LÝ TÀI KHOẢN", 165)
         ]
 
         for ten, chieu_rong in cac_chuc_nang:
@@ -136,11 +125,7 @@ class QuanLyDiemDen(ctk.CTkFrame):
                 fg_color="#C8B99A" if dang_mo else "#57595A",
                 hover_color="#B7A582" if dang_mo else "#3C3F40",
                 text_color="#333333" if dang_mo else "white"
-            ).pack(
-                side="left",
-                padx=3
-            )
-
+            ).pack(side="left", padx=3)
 
         # =================================================
         # TIÊU ĐỀ
@@ -154,7 +139,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
         )
 
         title.pack(pady=10)
-
 
         # =================================================
         # KHUNG NHẬP DỮ LIỆU
@@ -171,7 +155,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
             padx=15,
             pady=5
         )
-
 
         # MÃ ĐIỂM ĐẾN
 
@@ -191,7 +174,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         self.txtMaDiemDen.grid(row=0, column=1, padx=8, pady=6)
 
-
         # TÊN ĐIỂM ĐẾN
 
         ctk.CTkLabel(
@@ -210,8 +192,7 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         self.txtTenDiemDen.grid(row=0, column=3, padx=8, pady=6)
 
-
-        # TỈNH / THÀNH
+        # TỈNH / THÀNH PHỐ
 
         ctk.CTkLabel(
             input_frame,
@@ -228,7 +209,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
         )
 
         self.txtTinhThanh.grid(row=1, column=1, padx=8, pady=6)
-
 
         # ĐỊA CHỈ
 
@@ -248,7 +228,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         self.txtDiaChi.grid(row=1, column=3, padx=8, pady=6)
 
-
         # MÔ TẢ
 
         ctk.CTkLabel(
@@ -267,7 +246,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         self.txtMoTa.grid(row=2, column=1, padx=8, pady=6)
 
-
         # =================================================
         # KHUNG BẢNG
         # =================================================
@@ -285,14 +263,13 @@ class QuanLyDiemDen(ctk.CTkFrame):
             pady=5
         )
 
-
         # CẤU HÌNH BẢNG
 
         style = ttk.Style()
 
         style.configure(
             "Treeview",
-            font=("Times New Roman", 26),
+            font=("Times New Roman", 30),
             rowheight=45,
             background="white",
             foreground="black",
@@ -301,7 +278,7 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         style.configure(
             "Treeview.Heading",
-            font=("Times New Roman", 24, "bold"),
+            font=("Times New Roman", 28, "bold"),
             background="#D9D9D9",
             foreground="black"
         )
@@ -311,7 +288,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
             background=[("selected", "#B7D7F0")],
             foreground=[("selected", "black")]
         )
-
 
         # CỘT BẢNG
 
@@ -329,7 +305,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
             show="headings"
         )
 
-
         # TÊN CỘT
 
         self.tree.heading("MaDiemDen", text="Mã điểm đến")
@@ -338,15 +313,13 @@ class QuanLyDiemDen(ctk.CTkFrame):
         self.tree.heading("DiaChi", text="Địa chỉ")
         self.tree.heading("MoTa", text="Mô tả")
 
-
         # ĐỘ RỘNG CỘT
 
-        self.tree.column("MaDiemDen", width=120, anchor="center")
-        self.tree.column("TenDiemDen", width=220, anchor="center")
-        self.tree.column("TinhThanh", width=180, anchor="center")
-        self.tree.column("DiaChi", width=230, anchor="center")
-        self.tree.column("MoTa", width=250, anchor="center")
-
+        self.tree.column("MaDiemDen", width=90, anchor="center")
+        self.tree.column("TenDiemDen", width=200, anchor="center")
+        self.tree.column("TinhThanh", width=100, anchor="center")
+        self.tree.column("DiaChi", width=200, anchor="center")
+        self.tree.column("MoTa", width=400, anchor="center")
 
         self.tree.pack(
             fill="both",
@@ -355,64 +328,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
             pady=8
         )
 
-
-               # ================= NÚT CHỨC NĂNG =================
-
-        button_frame = ctk.CTkFrame(
-            self,
-            fg_color="transparent"
-        )
-
-        button_frame.pack(pady=8)
-
-        self.btnThem = ctk.CTkButton(
-            button_frame,
-            text="THÊM",
-            width=150,
-            height=40,
-            font=("Times New Roman", 14, "bold"),
-            fg_color="#2196F3",
-            command=self.them_diem_den
-        )
-
-        self.btnThem.grid(row=0, column=0, padx=10)
-
-        self.btnSua = ctk.CTkButton(
-            button_frame,
-            text="SỬA",
-            width=150,
-            height=40,
-            font=("Times New Roman", 14, "bold"),
-            fg_color="#FF9800",
-            command=self.sua_diem_den
-        )
-
-        self.btnSua.grid(row=0, column=1, padx=10)
-
-        self.btnXoa = ctk.CTkButton(
-            button_frame,
-            text="XÓA",
-            width=150,
-            height=40,
-            font=("Times New Roman", 14, "bold"),
-            fg_color="#F44336",
-            command=self.xoa_diem_den
-        )
-
-        self.btnXoa.grid(row=0, column=2, padx=10)
-
-        self.btnLamMoi = ctk.CTkButton(
-            button_frame,
-            text="LÀM MỚI",
-            width=150,
-            height=40,
-            font=("Times New Roman", 14, "bold"),
-            fg_color="#607D8B",
-            command=self.lam_moi
-        )
-
-        self.btnLamMoi.grid(row=0, column=3, padx=10)
-
         # CHỌN DÒNG
 
         self.tree.bind(
@@ -420,17 +335,178 @@ class QuanLyDiemDen(ctk.CTkFrame):
             self.chon_dong
         )
 
+        # =================================================
+        # KHUNG NÚT CHỨC NĂNG
+        # =================================================
 
-        # HIỂN THỊ DỮ LIỆU
+        button_frame = ctk.CTkFrame(
+            self,
+            fg_color="transparent"
+        )
+
+        button_frame.pack(
+            fill="x",
+            padx=15,
+            pady=8
+        )
+
+        # NHÓM 4 NÚT BÊN TRÁI
+
+        left_frame = ctk.CTkFrame(
+            button_frame,
+            fg_color="transparent"
+        )
+
+        left_frame.pack(side="left")
+
+        self.btnThem = ctk.CTkButton(
+            left_frame,
+            text="THÊM",
+            width=130,
+            height=40,
+            font=("Times New Roman", 14, "bold"),
+            fg_color="#2196F3",
+            hover_color="#1976D2",
+            command=self.them_diem_den
+        )
+
+        self.btnThem.pack(side="left", padx=4)
+
+        self.btnSua = ctk.CTkButton(
+            left_frame,
+            text="SỬA",
+            width=130,
+            height=40,
+            font=("Times New Roman", 14, "bold"),
+            fg_color="#FF9800",
+            hover_color="#E68900",
+            command=self.sua_diem_den
+        )
+
+        self.btnSua.pack(side="left", padx=4)
+
+        self.btnXoa = ctk.CTkButton(
+            left_frame,
+            text="XÓA",
+            width=130,
+            height=40,
+            font=("Times New Roman", 14, "bold"),
+            fg_color="#F44336",
+            hover_color="#D32F2F",
+            command=self.xoa_diem_den
+        )
+
+        self.btnXoa.pack(side="left", padx=4)
+
+        self.btnLamMoi = ctk.CTkButton(
+            left_frame,
+            text="LÀM MỚI",
+            width=130,
+            height=40,
+            font=("Times New Roman", 14, "bold"),
+            fg_color="#607D8B",
+            hover_color="#455A64",
+            command=self.lam_moi
+        )
+
+        self.btnLamMoi.pack(side="left", padx=4)
+
+        # ĐƯỜNG KẺ PHÂN CÁCH
+
+        vach_ngan = ctk.CTkFrame(
+            button_frame,
+            width=2,
+            height=40,
+            fg_color="#B7A582"
+        )
+
+        vach_ngan.pack(
+            side="left",
+            padx=8
+        )
+
+        # NÚT TÌM KIẾM
+
+        self.btnTimKiem = ctk.CTkButton(
+            button_frame,
+            text="⌕  TÌM KIẾM",
+            width=130,
+            height=40,
+            font=("Times New Roman", 13, "bold"),
+            fg_color="#D6E8F8",
+            hover_color="#B8D8F5",
+            text_color="#1565C0",
+            command=self.tim_kiem
+        )
+
+        self.btnTimKiem.pack(
+            side="left",
+            padx=4
+        )
+
+        # CHỮ TÌM KIẾM
+
+        lblTimKiem = ctk.CTkLabel(
+            button_frame,
+            text="Tìm kiếm:",
+            font=("Times New Roman", 14)
+        )
+
+        lblTimKiem.pack(
+            side="left",
+            padx=4
+        )
+
+        # Ô NHẬP TỪ KHÓA
+
+        self.txtTimKiem = ctk.CTkEntry(
+            button_frame,
+            width=155,
+            height=40,
+            font=("Times New Roman", 14),
+            placeholder_text="Nhập từ khóa..."
+        )
+
+        self.txtTimKiem.pack(
+            side="left",
+            padx=4
+        )
+
+        # NHẤN ENTER ĐỂ TÌM KIẾM
+
+        self.txtTimKiem.bind(
+            "<Return>",
+            lambda event: self.tim_kiem()
+        )
+
+        # NÚT XÓA TÌM KIẾM
+
+        self.btnXoaTimKiem = ctk.CTkButton(
+            button_frame,
+            text="✖  XÓA TÌM KIẾM",
+            width=130,
+            height=40,
+            font=("Times New Roman", 12, "bold"),
+            fg_color="#F5A3A3",
+            hover_color="#E88B8B",
+            text_color="#A32222",
+            command=self.xoa_tim_kiem
+        )
+
+        self.btnXoaTimKiem.pack(
+            side="right",
+            padx=4
+        )
+
+        # HIỂN THỊ DỮ LIỆU BAN ĐẦU
 
         self.hien_thi_diem_den()
-
 
     # =====================================================
     # HIỂN THỊ DỮ LIỆU
     # =====================================================
 
-    def hien_thi_diem_den(self):
+    def hien_thi_diem_den(self, tu_khoa=None):
 
         for item in self.tree.get_children():
             self.tree.delete(item)
@@ -444,16 +520,43 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
             cursor = conn.cursor()
 
-            cursor.execute("""
-                SELECT
-                    MaDiemDen,
-                    TenDiemDen,
-                    TinhThanh,
-                    DiaChi,
-                    MoTa
-                FROM DIEMDEN
-                ORDER BY MaDiemDen
-            """)
+            if tu_khoa:
+
+                cursor.execute("""
+                    SELECT
+                        MaDiemDen,
+                        TenDiemDen,
+                        TinhThanh,
+                        DiaChi,
+                        MoTa
+                    FROM DIEMDEN
+                    WHERE
+                        CAST(MaDiemDen AS NVARCHAR(50)) LIKE ?
+                        OR TenDiemDen LIKE ?
+                        OR TinhThanh LIKE ?
+                        OR DiaChi LIKE ?
+                        OR MoTa LIKE ?
+                    ORDER BY MaDiemDen
+                """, (
+                    f"%{tu_khoa}%",
+                    f"%{tu_khoa}%",
+                    f"%{tu_khoa}%",
+                    f"%{tu_khoa}%",
+                    f"%{tu_khoa}%"
+                ))
+
+            else:
+
+                cursor.execute("""
+                    SELECT
+                        MaDiemDen,
+                        TenDiemDen,
+                        TinhThanh,
+                        DiaChi,
+                        MoTa
+                    FROM DIEMDEN
+                    ORDER BY MaDiemDen
+                """)
 
             rows = cursor.fetchall()
 
@@ -471,6 +574,8 @@ class QuanLyDiemDen(ctk.CTkFrame):
                     )
                 )
 
+            cursor.close()
+
         except Exception as e:
 
             messagebox.showerror(
@@ -481,6 +586,64 @@ class QuanLyDiemDen(ctk.CTkFrame):
         finally:
             conn.close()
 
+    # =====================================================
+    # TÌM KIẾM ĐIỂM ĐẾN
+    # =====================================================
+
+    def tim_kiem(self):
+
+        tu_khoa = self.txtTimKiem.get().strip()
+
+        if tu_khoa == "":
+            messagebox.showwarning(
+                "Thông báo",
+                "Vui lòng nhập nội dung cần tìm kiếm!"
+            )
+            return
+
+        self.hien_thi_diem_den(tu_khoa)
+
+        for item in self.tree.selection():
+            self.tree.selection_remove(item)
+
+        self.lam_trong_o_nhap()
+
+        if not self.tree.get_children():
+            messagebox.showinfo(
+                "Thông báo",
+                "Không tìm thấy điểm đến phù hợp!"
+            )
+
+    # =====================================================
+    # XÓA TÌM KIẾM
+    # =====================================================
+
+    def xoa_tim_kiem(self):
+
+        # Chỉ xóa nội dung ô tìm kiếm
+        self.txtTimKiem.delete(0, "end")
+
+        # Bỏ chọn dòng đang chọn trên bảng
+        for item in self.tree.selection():
+            self.tree.selection_remove(item)
+
+        # Bỏ focus khỏi dòng đang chọn
+        self.tree.focus("")
+
+        # Hiển thị lại toàn bộ điểm đến
+        self.hien_thi_diem_den()
+
+    # =====================================================
+    # XÓA TRỐNG CÁC Ô NHẬP
+    # =====================================================
+
+    def lam_trong_o_nhap(self):
+
+        self.txtMaDiemDen.delete(0, "end")
+        self.txtTenDiemDen.delete(0, "end")
+        self.txtTinhThanh.delete(0, "end")
+        self.txtDiaChi.delete(0, "end")
+        self.txtMoTa.delete(0, "end")
 
     # =====================================================
     # CHỌN DÒNG
@@ -498,21 +661,13 @@ class QuanLyDiemDen(ctk.CTkFrame):
         if not values:
             return
 
-        self.txtMaDiemDen.delete(0, "end")
+        self.lam_trong_o_nhap()
+
         self.txtMaDiemDen.insert(0, values[0])
-
-        self.txtTenDiemDen.delete(0, "end")
         self.txtTenDiemDen.insert(0, values[1])
-
-        self.txtTinhThanh.delete(0, "end")
         self.txtTinhThanh.insert(0, values[2])
-
-        self.txtDiaChi.delete(0, "end")
         self.txtDiaChi.insert(0, values[3])
-
-        self.txtMoTa.delete(0, "end")
         self.txtMoTa.insert(0, values[4])
-
 
     # =====================================================
     # THÊM ĐIỂM ĐẾN
@@ -580,7 +735,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
                 "Thêm điểm đến thành công!"
             )
 
-            self.hien_thi_diem_den()
             self.lam_moi()
 
         except Exception as e:
@@ -594,7 +748,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         finally:
             conn.close()
-
 
     # =====================================================
     # SỬA ĐIỂM ĐẾN
@@ -658,7 +811,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
                 "Sửa điểm đến thành công!"
             )
 
-            self.hien_thi_diem_den()
             self.lam_moi()
 
         except Exception as e:
@@ -672,7 +824,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
 
         finally:
             conn.close()
-
 
     # =====================================================
     # XÓA ĐIỂM ĐẾN
@@ -728,7 +879,6 @@ class QuanLyDiemDen(ctk.CTkFrame):
                 "Xóa điểm đến thành công!"
             )
 
-            self.hien_thi_diem_den()
             self.lam_moi()
 
         except Exception as e:
@@ -745,18 +895,22 @@ class QuanLyDiemDen(ctk.CTkFrame):
         finally:
             conn.close()
 
-
     # =====================================================
     # LÀM MỚI
     # =====================================================
 
     def lam_moi(self):
 
-        self.txtMaDiemDen.delete(0, "end")
-        self.txtTenDiemDen.delete(0, "end")
-        self.txtTinhThanh.delete(0, "end")
-        self.txtDiaChi.delete(0, "end")
-        self.txtMoTa.delete(0, "end")
+        self.lam_trong_o_nhap()
+
+        self.txtTimKiem.delete(0, "end")
+
+        for item in self.tree.selection():
+            self.tree.selection_remove(item)
+
+        self.tree.focus("")
+
+        self.hien_thi_diem_den()
 
 
 # =========================================================
